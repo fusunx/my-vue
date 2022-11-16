@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="./runtime-dom.iife.js"></script>
+    <script>
+      let { render, h, Fragment, Text, reactive, toRefs, watch } =
+        VueRuntimeDOM;
+
+      const ChildComponent = {
+        setup(props, { emit, slots }) {
+          return function () {
+            console.log('====')
+            return h(Fragment, [
+              h('div', this.$slots.header()),
+              h('div', slots.default()),
+              h('div', slots.main()),
+              h('div', slots.footer())
+            ])
+          }
+        }
+      };
+
+      const VueStatefulComponent = {
+        render() {
+          return h('div', h(ChildComponent, null, {
+            default: () => {
+              return h('a', 'default')
+            },
+            header: () => {
+              return h('a', 'header')
+            },
+            main: () => {
+              return h('a', 'main')
+            },
+            footer() {
+              return h('a', 'footer')
+            }
+          }))
+        },
+      };
+      
+      render(h(VueStatefulComponent), app);
+    </script>
+  </body>
+</html>

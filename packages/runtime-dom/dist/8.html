@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="./runtime-dom.iife.js"></script>
+    <script>
+      let { render, h, reactive, provide, inject } = VueRuntimeDOM;
+
+      const ChildComponent = {
+        setup() {
+          const state = inject('state')
+          console.log(state)
+          return {
+            state
+          }
+        },
+        render() {
+          return h('div', this.state.a)
+        }
+      }
+
+      const VueStatefulComponent = {
+        setup() {
+          const state = reactive({a: 1})
+          provide('state', state)
+          setTimeout(() => {
+            state.a = 2
+          }, 1000);
+          return {}
+        },
+        render() {
+          return h(ChildComponent);
+        },
+      };
+
+      render(h(VueStatefulComponent), app);
+    </script>
+  </body>
+</html>

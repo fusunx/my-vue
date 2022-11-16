@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="./runtime-dom.iife.js"></script>
+    <script>
+      let { render, h, KeepAlive } = VueRuntimeDOM;
+
+      const Component1 = {
+        render: () => {
+          console.log("c1");
+          return h("div", "c1");
+        },
+      };
+
+      const Component2 = {
+        render: () => {
+          console.log("c2");
+          return h("div", "c2");
+        },
+      };
+
+      const Component3 = {
+        render: () => {
+          console.log("c3");
+          return h("div", "c3");
+        },
+      };
+
+      render(
+        h(
+          KeepAlive,
+          { max: 2 },
+          {
+            default: () => h(Component1),
+          }
+        ),
+        app
+      );
+
+      setTimeout(() => {
+        render(
+          h(
+            KeepAlive,
+            { max: 2 },
+            {
+              default: () => h(Component2),
+            }
+          ),
+          app
+        );
+      }, 1000);
+
+      setTimeout(() => {
+        render(
+          h(
+            KeepAlive,
+            { max: 2 },
+            {
+              default: () => h(Component3),
+            }
+          ),
+          app
+        );
+      }, 2000);
+
+      setTimeout(() => {
+        render(
+          h(
+            KeepAlive,
+            { max: 2 },
+            {
+              default: () => h(Component1),
+            }
+          ),
+          app
+        );
+      }, 2000);
+    </script>
+  </body>
+</html>

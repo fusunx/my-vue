@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="app2"></div>
+    <script src="./runtime-dom.iife.js"></script>
+    <script>
+      let { render, h, effect, reactive, effectScope } = VueRuntimeDOM;
+
+      const scope = effectScope();
+      scope.run(() => {
+        const state = reactive({ count: 5 });
+        effect(() => {
+          app.innerHTML = state.count;
+        });
+        setInterval(() => {
+          state.count++;
+        }, 1000);
+
+        const inner = effectScope(true);
+        inner.run(() => {
+          const state = reactive({ count: 1 });
+          effect(() => {
+            app2.innerHTML = state.count;
+          });
+          setInterval(() => {
+            state.count++;
+          }, 1000);
+        });
+      });
+      setTimeout(() => {
+        scope.stop()
+      }, 2000);
+    </script>
+  </body>
+</html>

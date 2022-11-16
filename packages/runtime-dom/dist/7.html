@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="./runtime-dom.iife.js"></script>
+    <script>
+      let { render, h, getCurrentInstance, onMounted } = VueRuntimeDOM;
+
+      const VueStatefulComponent = {
+        setup() {
+          onMounted(() => {
+            console.log(1);
+          });
+          onMounted(() => {
+            console.log(2);
+          });
+          onMounted(() => {
+            console.log(3);
+          });
+          console.log(getCurrentInstance());
+        },
+        render() {
+          return h("div", "hello");
+        },
+      };
+
+      render(h(VueStatefulComponent), app);
+    </script>
+  </body>
+</html>

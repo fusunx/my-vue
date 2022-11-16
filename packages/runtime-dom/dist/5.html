@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="./runtime-dom.iife.js"></script>
+    <script>
+      let { render, h, Fragment, Text, reactive, toRefs, watch } =
+        VueRuntimeDOM;
+
+      const ChildComponent = {
+        setup(props, { emit }) {
+          const increase = () => {
+            emit("increase", 1, 2);
+          }
+          return {
+            increase
+          };
+        },
+        render() {
+          return h("button", {
+            onClick: this.increase,
+          }, 'emit 父组件');
+        },
+      };
+
+      const VueStatefulComponent = {
+        data() {
+          return {
+            count: 0,
+          };
+        },
+        /**
+         * 1) setup 可以返回一个 render 函数 (优先级最高)
+         * 2) setup 可以返回一个 对象
+         */
+        setup(props, context) {
+          return {};
+        },
+        render() {
+          return h("div", [
+            h("h1", this.count),
+            h(ChildComponent, {
+              onIncrease: (...args) => {
+                this.count++;
+              },
+            }),
+          ]);
+        },
+      };
+
+      render(h(VueStatefulComponent), app);
+    </script>
+  </body>
+</html>
